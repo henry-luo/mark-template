@@ -1,5 +1,5 @@
 # Mark Template
-Mark Template is a new JS template engine inspired by JSX and XSLT. It's template syntax is based on [Mark](https://mark.js.org), a new markup notation that has unified support of JSON, HTML and XML.
+Mark Template is a new JS template engine inspired by [React JSX](https://reactjs.org/docs/introducing-jsx.html) and [XSLT](https://en.wikipedia.org/wiki/XSLT). It's template syntax is based on [Mark](https://mark.js.org), a new markup notation that has unified support of JSON, HTML and XML.
 
 Features of Mark Template:
 
@@ -26,10 +26,10 @@ Like React JSX and XSLT, each Mark template is actually a collection of transfor
   `}`
   - A component template. 
   - Component model:
-    - this.model.*: the current matched model object;
-    - this.context.*: global context for the entire transformation;
-    - this.children.*: contents defined in the component template;
-    - this.*: properties defined in the component template;
+    - `this.model.*`: the current matched model object;
+    - `this.context.*`: global context for the entire transformation;
+    - `this.children.*`: contents defined in the component template;
+    - `this.*`: properties defined in the component template;
 - `{function name:'...' ...}`
   - A function to be called during transformation. 
 - `{comp ...props}`
@@ -53,7 +53,7 @@ The contents inside component/function body are processed in the following prior
 #### 3.1 Pre-defined transform element
 
 - {if}
-  - {else}
+- {else}
 - {for}
 - {let}
 - {apply}
@@ -68,12 +68,12 @@ The contents inside component/function body are processed in the following prior
 
 An element whose name starts with 'this.' or a Mark pragma are treated as inline expressions.
 
-- {this.name}
-- {expr as pragma}
+- `{this.name}`
+- `{expr as pragma}`
 
 #### 3.4 Literal elements
 
-- {literalElement ...}
+- `{literalElement ...}`
 
 ### 4. Output Adaptors
 

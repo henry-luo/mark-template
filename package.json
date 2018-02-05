@@ -1,6 +1,6 @@
 {
   "name": "mark-template",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "JS template engine inspired by JSX and XSLT",
   "main": "mark-template.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://101.127.237.195/git/acro-template.git"
+    "url": "https://github.com/henry-luo/mark-template.git"
   },
   "keywords": [
     "template",
