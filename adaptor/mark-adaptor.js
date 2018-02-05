@@ -1,22 +1,32 @@
-const fs = require('fs');
-const fsf = require('fs-force');
 const Mark = require('mark-js');
 
 module.exports = 
 class Component {
+	// output construction
 	static createElement(type, properties, children) {
 		return Mark(type, properties, children);
 	}
 	static createText(item) { 
 		return item.toString();
 	}
-	static load(filepath) {
-		return fs.readFileSync(filepath, 'utf8').replace(/^\uFEFF/, '');
+	
+	// template processing
+	static parse(source) {
+		return Mark.parse(source);
 	}
-	static loadTemplate(url) {
-		return Mark.parse(Component.load(url));
-	}
-	static save(text, filepath) {
-		return fsf.writeFileSync(filepath, '\ufeff'+text, {encoding:'utf8'});
+	static load(url) {
+		let source = null;
+		// todo: error handling
+		if (typeof document !== 'undefined') { // in browser environment
+			// make sync AJAX call
+			var xhReq = new XMLHttpRequest();
+			xhReq.open("GET", url, false);
+			xhReq.send(null);
+			source = xhReq.responseText;  // console.log('xml:', xml);
+		} else { // assume node environment
+			const fs = require('fs');
+			source = fs.readFileSync(url, 'utf8').replace(/^\uFEFF/, ''); // assume UTF8 encoding, and trims the starting BOM char if any
+		}
+		return source;
 	}
 }

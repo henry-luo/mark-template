@@ -1,7 +1,6 @@
 const test = require('tape');
-const Mark = require('mark-js');
 const Template = require('./../mark-template.js');
-const Component = require('./../adaptor/mark-adaptor.js');
+const MarkAdaptor = require('./../adaptor/mark-adaptor.js');
 
 test('Template import support', function(assert) {
 	var tmplMain = `
@@ -12,9 +11,8 @@ test('Template import support', function(assert) {
 			}
 		}`;
 	var model = null;
-	var tmpl = Template.compile(Mark.parse(tmplMain), null, Component.loadTemplate);
-	var output = Template.apply(tmpl, Component, {});
-	// var out_text = Mark.stringify(output[0], null, '\t');
+	var tmpl = Template.compile(tmplMain, null, MarkAdaptor);
+	var output = Template.apply(tmpl, {});
 	assert.deepEqual(output, ['inside imported template'], 'Template import support');
 	assert.end();
 });

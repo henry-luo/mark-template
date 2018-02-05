@@ -1,4 +1,4 @@
-const $iterator = Symbol.iterator;
+const MarkAdaptor = require('./adaptor/mark-adaptor.js');
 const $stack = Symbol('Mark.template.stack');
 const $paComp = Symbol('Mark.template.parentComponent');
 const $name = Symbol('Mark.template.name'); // for function name
@@ -22,7 +22,8 @@ function matchTemplate(tmpl, comp_name, comp) {
 }
 
 // compile Mark template into a rendering function
-function compile(tmpl, classes, loader) {
+function compile(tmpl, classes, adaptor) {
+	if (typeof tmpl === 'string') { tmpl = MarkAdaptor.parse(tmpl); }
 	// console.log('compiling ...', tmpl);
 	let compiled = [];  let hasOthers = false;
 	for (let comp of tmpl) {
@@ -34,8 +35,8 @@ function compile(tmpl, classes, loader) {
 		// todo: ensure import are before other elem
 		if (comp.constructor.name === 'import') {
 			if (hasOthers) { throw "import element should be before other elements"; }
-			let imp = loader(comp.at);
-			Array.prototype.push.apply(compiled, compile(imp, classes, loader));
+			let imp = adaptor.parse(adaptor.load(comp.at));
+			Array.prototype.push.apply(compiled, compile(imp, classes, adaptor));
 		} 
 		else { // component, function
 			hasOthers = true;
@@ -256,7 +257,7 @@ function applyToModel(m, params, comp, tmpl, output, creator) {
 			// if no matching template
 			let content = null;
 			// apply to contents
-			if (m[$iterator]) {
+			if (m[Symbol.iterator]) {
 				content = [];  
 				applyNodes(m, comp, tmpl, content, creator);
 			}
@@ -404,7 +405,7 @@ function applyNode(node, comp, tmpl, output, creator) {
 				let c = newComp(comp, cm);
 				// apply properties
 				applyProps(c, node, comp);
-				if (node[$iterator]) { 
+				if (node[Symbol.iterator]) { 
 					c.children = node;
 					// children needs to be constructed, instead of directly passing down
 				}
@@ -414,7 +415,7 @@ function applyNode(node, comp, tmpl, output, creator) {
 				// construct properties
 				applyProps(props, node, comp);
 				// construct content
-				if (node[$iterator]) {
+				if (node[Symbol.iterator]) {
 					content = [];  
 					applyNodes(node, comp, tmpl, content, creator);
 				}
@@ -426,13 +427,13 @@ function applyNode(node, comp, tmpl, output, creator) {
 	return null;
 }
 
-function apply(tmpl, creator, model, context) {
+function apply(tmpl, model, creator, context) {
 	let rootName = model.constructor.name;   // console.log('apply tmpl', tmpl);
 	let comp = matchTemplate(tmpl, rootName, model);
 	if (comp) {
 		let output = [];  let cont = context || {}; 
 		let c = newComp({model:model, context:cont}, comp);
-		applyComp(comp, c, null, tmpl, output, creator);
+		applyComp(comp, c, null, tmpl, output, creator || MarkAdaptor);
 		return output;
 	} else {
 		console.log("No matching component for " + rootName);

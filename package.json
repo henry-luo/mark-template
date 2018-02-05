@@ -1,10 +1,10 @@
 {
   "name": "mark-template",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JS template engine inspired by JSX and XSLT",
   "main": "mark-template.js",
   "scripts": {
-    "build": "browserify --standalone MarkTemplate mark-template.js | uglifyjs > dist/mark-template.js",
+    "build": "browserify mark-template.js | uglifyjs > dist/mark-template.js",
     "test": "clear && tape test/*.js | tap-spec",
     "karma-test": "karma run",
     "karma-start": "browserify test/basic.node.js > run/basic.js & karma start",

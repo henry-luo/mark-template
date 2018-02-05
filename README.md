@@ -21,14 +21,19 @@ Like React JSX and XSLT, each Mark template is actually a collection of transfor
 
 - `{import at:'url'}`
   - Import functions from template at the specified URL.
-- `{component name:'...', match:'selector', prop:value `
+- `{component name:'...', match:'selector', extend:'class', prop:value `
   `    ... // template contents`
   `}`
-  - A component
+  - A component template. 
+  - Component model:
+    - this.model.*: the current matched model object;
+    - this.context.*: global context for the entire transformation;
+    - this.children.*: contents defined in the component template;
+    - this.*: properties defined in the component template;
 - `{function name:'...' ...}`
-  - A function to be called by other transform functions. 
+  - A function to be called during transformation. 
 - `{comp ...props}`
-  - A shorthand for template component
+  - A shorthand for component template that matches elements with name `comp`.
 
 ### 3. Component Transformation
 
@@ -87,9 +92,9 @@ Then in your node script, use it as:
 ```js
 const Mark = require('mark');
 const Template = require('mark-template');
-var tmpl = Template.compile(Mark.parse(`... template source ...`));
+var tmpl = Template.compile(`... template source ...`);
 var model = Mark.parse(`... model data ...`);
-var output = Template.apply(tmpl, 'mark', model);
+var output = Template.apply(tmpl, model);
 console.log("Output: " + Mark.stringify(output));
 ```
 
@@ -99,9 +104,9 @@ To use the library in browser, you can include the `mark-template.js` under `/di
 <script src='mark.js'></script>
 <script src='mark-template.js'></script>
 <script> 
-var tmpl = MarkTemplate.compile(Mark.parse(`... template source ...`));
+var tmpl = MarkTemplate.compile(`... template source ...`);
 var model = Mark.parse(`... model data ...`);
-var output = MarkTemplate.apply(tmpl, 'mark', model);
+var output = MarkTemplate.apply(tmpl, model);
 console.log("Output: " + Mark.stringify(output));
 </script>
 ```
