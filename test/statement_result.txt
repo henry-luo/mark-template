@@ -1,0 +1,26 @@
+﻿{div 
+	{h1 
+		"Dialog List"
+	} 
+	{p 
+		{span style:{float:"right"} 
+			"henry"
+		} 
+		"hello"
+	} 
+	{p 
+		{span style:{float:"left"} 
+			"peter"
+		} 
+		"how are you?"
+	} 
+	{p 
+		{span style:{float:"right"} 
+			"henry"
+		} 
+		"I am fine"
+	} 
+	{div 
+		"Copyright © 2015-2017"
+	}
+}

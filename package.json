@@ -1,0 +1,42 @@
+{
+  "name": "acro-template",
+  "version": "0.1.0",
+  "description": "JS template engine inspired by JSX and XSLT",
+  "main": "mark-template.js",
+  "scripts": {
+    "dev": "watchify --debug --standalone Component lib/component.js -o dist/component.js -v",
+    "build": "mkdir dist & npm-run-all --parallel build-tmpl build-comp",
+    "build-tmpl": "browserify mark-template.js | uglifyjs > dist/mark-template.js",
+    "build-comp": "browserify --standalone Component lib/component.js | uglifyjs > dist/component.js",
+    "test": "clear && tape test/*.js | tap-spec",
+    "karma-test": "karma run",
+    "karma-start": "browserify test/basic.node.js > run/basic.js & karma start",
+    "karma-stop": "karma stop"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://101.127.237.195/git/acro-template.git"
+  },
+  "keywords": [
+    "template",
+    "transformation",
+    "JSX",
+    "XSLT",
+    "template engine"
+  ],
+  "author": "Henry Luo",
+  "license": "MIT",
+  "dependencies": {
+    "mark-js": "^0.2.14"
+  },
+  "devDependencies": {
+    "cp-cli": "^1.1.0",
+    "fs-force": "^3.1.0",
+    "mkdirp": "^0.5.1",
+    "npm-run-all": "^4.1.2",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0",
+    "uglify-es": "^3.3.7",
+    "virtual-dom": "^2.1.1"
+  }
+}
