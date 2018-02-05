@@ -1,13 +1,10 @@
 {
-  "name": "acro-template",
+  "name": "mark-template",
   "version": "0.1.0",
   "description": "JS template engine inspired by JSX and XSLT",
   "main": "mark-template.js",
   "scripts": {
-    "dev": "watchify --debug --standalone Component lib/component.js -o dist/component.js -v",
-    "build": "mkdir dist & npm-run-all --parallel build-tmpl build-comp",
-    "build-tmpl": "browserify mark-template.js | uglifyjs > dist/mark-template.js",
-    "build-comp": "browserify --standalone Component lib/component.js | uglifyjs > dist/component.js",
+    "build": "browserify --standalone MarkTemplate mark-template.js | uglifyjs > dist/mark-template.js",
     "test": "clear && tape test/*.js | tap-spec",
     "karma-test": "karma run",
     "karma-start": "browserify test/basic.node.js > run/basic.js & karma start",
@@ -27,7 +24,7 @@
   "author": "Henry Luo",
   "license": "MIT",
   "dependencies": {
-    "mark-js": "^0.2.14"
+    "mark-js": "^0.4.1"
   },
   "devDependencies": {
     "cp-cli": "^1.1.0",
