@@ -259,7 +259,7 @@ function applyToModel(m, params, comp, tmpl, output, creator) {
 			if (m[Symbol.iterator]) {
 				content = [];  
 				let c = Object.create(comp);  c.model = m;
-				applyNodes(m, comp, tmpl, content, creator);
+				applyNodes(m, c, tmpl, content, creator);
 			} else {
 				content = m;  // copy all contents
 			}
