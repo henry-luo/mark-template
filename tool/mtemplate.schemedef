@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+           
+<Scheme>
+ <keyword-classes>
+ 	<keyword-classes>
+		<keyword-class name="mt_keywords">
+			template import extend if else is for each of let apply to compose this true false null NaN Infinity
+		</keyword-class>
+	</keyword-classes>
+ </keyword-classes>
+       
+ <schemedef name="mtemplate" title="Mark Template" author="Henry Luo" url="https://github.com/henry-luo/mark-template" version="1"
+   casesensitive="true" braces="{[()]}">
+           
+   <strings>
+     <!-- Double quoted string with \ as an escape character -->
+     <stringtype id="0" start="&quot;" end="&quot;" multiline="true" escape="\" />
+	 <stringtype id="1" start="'" end="'" multiline="true" escape="\" />
+   </strings>
+
+   <identifiers start="[\_a-zA-Z\$]" content="[\_a-zA-Z\$-]"/>
+
+   <comments>
+     <line start="//" />    
+     <block start="/*" end="*/" />
+   </comments>
+
+   <numbers start="[0-9]" content="[0-9.]" />
+
+   <!-- From here on is the traditional scheme definition block... -->
+   <lexer name="mtemplate" />
+   <use-styles>
+     <style name="Default" key="32" />
+     <style name="Line Comment" key="1" class="comment" />
+     <style name="Block Comment" key="2" class="comment" />
+	 <style name="Identifier" key="3" class="identifier"/>
+     <style name="Number" key="4" class="number" />
+     <style name="Keywords" key="5" class="keyword" />
+     <style name="String" key="10" class="string" />
+	 <style name="String 2" key="11" class="string" />
+   </use-styles>
+
+   <use-keywords>
+     <keyword key="0" name="Keywords" class="mt_keywords"/>
+   </use-keywords>
+
+ </schemedef>
+</Scheme>
