@@ -254,15 +254,17 @@ function applyToModel(m, params, comp, tmpl, output, creator) {
 			for (let p in params) { c[p] = params[p]; }
 			applyComp(cm, c, comp, tmpl, output, creator);
 		} else {
-			// if no matching template
+			// no matching template, apply to contents by default
 			let content = null;
-			// apply to contents
 			if (m[Symbol.iterator]) {
 				content = [];  
-				applyNodes(m, comp, tmpl, content, creator);
+				let c = Object.create(comp);  c.model = m;
+				applyNodes(m, c, tmpl, content, creator);
+			} else {
+				content = m;  // copy all contents
 			}
 			// construct vnode, copy the name, the props
-			output.push(creator.createElement(m.constructor.name, m, m));
+			output.push(creator.createElement(m.constructor.name, m, content));
 		}
 	}
 }
