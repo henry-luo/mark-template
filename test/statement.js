@@ -19,7 +19,7 @@ test('Template statement support', function(assert) {
 	var tmpl = Template.compile(MarkAdaptor.load('./test/statement.mt'), [Dialog, Message]);
 	var model = Mark.parse("{dialog user:'henry' {msg user:'henry' 'hello'} {msg user:'peter' 'how are you?'} {msg user:'henry' 'I am fine'}}");
 	var output = Template.apply(tmpl, model);
-	var out_text = Mark.stringify(output[0], null, '\t');
+	var out_text = Mark.stringify(output[0], {space:'\t'});
 	//Component.save(out_text, './test/output.txt');
 	
 	assert.equal(out_text, MarkAdaptor.load('./test/statement_result.txt'), 'Template statement support ');

@@ -27,6 +27,6 @@
 		}
 	}
 	{copyright
-		{'Copyright © 2015-' + (new Date().getFullYear() >= 2017 ? 2017:2016)}
+		{'Copyright © 2015-' + (new Date().getFullYear() >= 2017 ? 2017\:2016)}
 	}
 }
