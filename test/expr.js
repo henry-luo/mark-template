@@ -46,3 +46,20 @@ test('Context shadowing', function(assert) {
 	assert.equal(Mark.stringify(output), '{div "151"}', 'Context shadowing');
 	assert.end();
 });
+
+test('Apply index and length', function(assert) {
+	var tmpl = Template.compile(
+		`{template
+			{main
+				{div {apply}}
+				{div {apply to:{this.model.contents()[2]}}}
+			}
+			{item
+				{this.apply.index + 1} ' of ' {this.apply.length} '; '
+			}
+		}`);
+	var model = Mark("{main {item} {item} {item}}");
+	var output = Template.apply(tmpl, model, null, {a:1, b:2});
+	assert.equal(Mark.stringify(output), '[{div "1 of 3; 2 of 3; 3 of 3; "},{div "1 of 1; "}]', 'Apply index and length');
+	assert.end();
+});

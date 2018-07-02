@@ -225,7 +225,7 @@ function newComp(parentComp, compDef) {
 		}
 	}
 	else {
-		comp = {model: parentComp.model, context: parentComp.context};
+		comp = {model: parentComp.model, context: parentComp.context, apply: parentComp.apply};
 		if (compDef.constructor.name === 'function') {
 			Object.setPrototypeOf(comp, parentComp);
 			// copy over comp default properties, should all be static
@@ -348,13 +348,16 @@ function applyNode(node, comp, tmpl, output, creator) {
 			if (node.to != null) { // apply to specified items
 				model = evalProp(node.to, comp);  // console.log('apply to', model);
 				if (!(model instanceof Array)) { // single value
-					applyToModel(model, params, comp, tmpl, output, creator);
+					let newComp = Object.create(comp);  newComp.apply = {index:0, length:1};
+					applyToModel(model, params, newComp, tmpl, output, creator);
 					return null;
 				}
 			} 
 			// apply to model content
+			let newComp = Object.create(comp);  newComp.apply = {index:0, length:model.length()};
 			for (let m of model) {
-				applyToModel(m, params, comp, tmpl, output, creator);
+				applyToModel(m, params, newComp, tmpl, output, creator);
+				newComp.apply.index++;
 			}
 		}
 		else if (name === 'compose') {
