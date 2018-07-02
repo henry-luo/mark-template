@@ -102,7 +102,7 @@ class Component {
 		context = context || {};
 		context[$vdom] = {template:tmpl, model:model, state:{}};
 		console.log('model', model);
-		var vhtml = template.apply(tmpl, Component, model, context);   console.log('vnodes', vhtml);
+		var vhtml = template.apply(tmpl, model, context, Component);   console.log('vnodes', vhtml);
 		if (vhtml.length > 1) {
 			throw "Template should output only 1 root element";
 		} 
@@ -120,7 +120,7 @@ class Component {
 		
 		function domUpdate() {
 			let vdom = context[$vdom];
-			var vhtml = template.apply(vdom.template, Component, vdom.model, context);
+			var vhtml = template.apply(vdom.template, vdom.model, context, Component);
 			if (vhtml.length > 1) {
 				throw "Template should output only 1 root element";
 			}

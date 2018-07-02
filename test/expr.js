@@ -42,7 +42,7 @@ test('Context shadowing', function(assert) {
 			}
 		}`);
 	var model = Mark("{main {item}}");
-	var output = Template.apply(tmpl, model, null, {a:1, b:2});
+	var output = Template.apply(tmpl, model, {a:1, b:2});
 	assert.equal(Mark.stringify(output), '{div "151"}', 'Context shadowing');
 	assert.end();
 });
