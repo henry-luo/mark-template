@@ -24,7 +24,6 @@ test('Simple string output', function(assert) {
 	var model = Mark.parse(`{dialog {msg user:'henry' 'hello'} {msg user:'peter' 'how are you?'} {msg user:'henry' 'I am fine'}}`);
 	var output = Template.apply(tmpl, model); 
 	
-	// console.log(output[0]);  console.log(output[0].constructor.name);
-	assert.equal(Mark.stringify(output[0]), `{div "<msg user=henry>hello</msg><msg user=peter>how are you?</msg><msg user=henry>I am fine</msg>"}`, 'String output support');
+	assert.equal(Mark.stringify(output), `{div "<msg user=henry>hello</msg><msg user=peter>how are you?</msg><msg user=henry>I am fine</msg>"}`, 'String output support');
 	assert.end() ;
 });

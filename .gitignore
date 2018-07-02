@@ -6,3 +6,5 @@ npm-debug.log
 /run/*.js
 /test/output.txt
 /yarn.lock
+/test/statement.nmt
+/test/statement2.nmt

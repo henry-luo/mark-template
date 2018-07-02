@@ -117,9 +117,6 @@ function evalThis(field, comp) {
 
 function evalProp(val, comp) {
 	// console.log('eval expr', val);
-	// if (typeof val === 'string') {
-	//	return val.startsWith('{') && val.endsWith('}') ? evalExpr(val, comp) : val;
-	// } 
 	if (typeof val === 'object') {
 		// todo: support array
 		if (!val.constructor) { // Mark pragma
@@ -246,8 +243,9 @@ function newComp(parentComp, compDef) {
 }
 
 function applyToModel(m, params, comp, tmpl, output, creator) {
-	if (typeof m === 'string') { output.push(creator.createText(m)); }
-	else {
+	if (m == null) { return; } // null, undefined
+	if (typeof m === 'object') { // object
+		if (!m.constructor) { return; } // skip pragma
 		let cm = matchTemplate(tmpl, m.constructor.name, m);
 		if (cm) { // apply the template
 			let c= newComp(comp, cm);  c.model = m;
@@ -266,6 +264,9 @@ function applyToModel(m, params, comp, tmpl, output, creator) {
 			// construct vnode, copy the name, the props
 			output.push(creator.createElement(m.constructor.name, m, content));
 		}
+	}
+	else { // string, number
+		output.push(creator.createText(m));  // output text node
 	}
 }
 
@@ -344,7 +345,7 @@ function applyNode(node, comp, tmpl, output, creator) {
 				}
 			}
 			let model = comp.model;
-			if (node.to) { // apply to specified items
+			if (node.to != null) { // apply to specified items
 				model = evalProp(node.to, comp);  // console.log('apply to', model);
 				if (!(model instanceof Array)) { // single value
 					applyToModel(model, params, comp, tmpl, output, creator);
@@ -357,38 +358,31 @@ function applyNode(node, comp, tmpl, output, creator) {
 			}
 		}
 		else if (name === 'compose') {
-			let params = {}, hasParam = false;
+			let params = {}; // hasParam = false;
 			// eval apply properties
 			for (let p in node) {
 				if (node.hasOwnProperty(p)) {
-					params[p] = evalProp(node[p], comp);  hasParam = true;  // console.log('has prop '+p+':', params[p]);
+					params[p] = evalProp(node[p], comp);  // hasParam = true;  // console.log('has prop '+p+':', params[p]);
 				}
 			}
 			// construct content nodes
 			if (comp.children) {
-				/*
-				for (let child of comp.children) {
-					if (typeof child === 'string') {
-						output.push(creator.createText(child));
-					} else {
-						let cm = matchTemplate(tmpl, child.constructor.name, child);
-						if (cm) { // apply the template
-							// model object is not changed 
-							let c = newComp(comp, cm);
-							if (hasParam) { for (let p in params) { c[p] = params[p]; } }
-							// copy properties
-							for (let p in child) { c[p] = child[p]; }
-							if (child[$iterator]) { c.children = child; }					
-							applyComp(cm, c, tmpl, output, creator);
-						} else {
-							// if no matching template
-							applyNode(child, comp, tmpl, output, creator);
-							// output.push(creator.createElement(child.constructor.name, child, child));
-						}
-					}
-				}*/
 				applyNodes(comp.children, comp[$paComp], tmpl, output, creator);
 			}
+		}
+		else if (name === 'context') { // shadow the context value
+			let ctx = Object.create(comp.context);
+			for (let p in node) {
+				if (node.hasOwnProperty(p)) {
+					ctx[p] = evalProp(node[p], comp);
+				}
+			}
+			// console.log('ctx', ctx);
+			let newComp = Object.create(comp);  newComp.context = ctx;
+			applyNodes(node, newComp, tmpl, output, creator);
+		}
+		else if (name === 'log') {
+			console.log(typeof node.msg === 'string' ? node.msg : evalProp(node.msg, comp));
 		}
 		else if (name.includes('.')) {
 			// template value binding
@@ -436,6 +430,11 @@ function apply(tmpl, model, creator, context) {
 		let output = [];  let cont = context || {}; 
 		let c = newComp({model:model, context:cont}, comp);
 		applyComp(comp, c, null, tmpl, output, creator || MarkAdaptor);
+		if (!output.length) { return null; }
+		if (output.length === 1) { return output[0]; }
+		if (output.every(i => typeof i === 'string')) { // if all string, join them together
+			return output.join('');
+		}
 		return output;
 	} else {
 		console.log("No matching component for " + rootName);
@@ -450,5 +449,4 @@ if (typeof window !== 'undefined') { window.MarkTemplate = Template; }
 todo: 
 1. matchTemplate can be made more efficient;
 2. tmpl, output, creator can be made closure variable to avoid passing around;
-3. output parent node properly constructed?
 */

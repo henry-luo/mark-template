@@ -13,6 +13,6 @@ test('Template import support', function(assert) {
 	var model = null;
 	var tmpl = Template.compile(tmplMain, null, MarkAdaptor);
 	var output = Template.apply(tmpl, {});
-	assert.deepEqual(output, ['inside imported template'], 'Template import support');
+	assert.deepEqual(output, 'inside imported template', 'Template import support');
 	assert.end();
 });

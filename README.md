@@ -5,6 +5,7 @@ Features of Mark Template:
 
 - **Clean** template syntax based on Mark notation.
 - **Wide-range** of input/output formats support, including JSON, HTML, XML, DOM, virtual-dom, etc.
+- Completely **functional** transformation.
 - Powerful **high-order** transformation (like React high-order components).
 - Powerful **selector-based** template matching (like XSLT, but uses CSS selector).
 

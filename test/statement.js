@@ -19,7 +19,7 @@ test('Template statement support', function(assert) {
 	var tmpl = Template.compile(MarkAdaptor.load('./test/statement.mt'), [Dialog, Message]);
 	var model = Mark.parse("{dialog user:'henry' {msg user:'henry' 'hello'} {msg user:'peter' 'how are you?'} {msg user:'henry' 'I am fine'}}");
 	var output = Template.apply(tmpl, model);
-	var out_text = Mark.stringify(output[0], {space:'\t'});
+	var out_text = Mark.stringify(output, {space:'\t'});
 	//Component.save(out_text, './test/output.txt');
 	
 	assert.equal(out_text, MarkAdaptor.load('./test/statement_result.txt'), 'Template statement support ');
@@ -29,7 +29,7 @@ test('Template statement support', function(assert) {
 test('Test for loop', function(assert) {
 	var tmpl = Template.compile("{template {test {for each:'i', of:[1, 2, 'string'] {i}} }}");
 	var output = Template.apply(tmpl, Mark.parse("{test}"));
-	assert.deepEqual(output, ['1', '2', 'string'], 'Template for loop support ');
+	assert.deepEqual(output, '12string', 'Template for loop support ');
 	assert.end();
 });
 
@@ -61,6 +61,6 @@ test('Test let statement', function(assert) {
 		}`
 	);
 	var output = Template.apply(tmpl, Mark.parse("{test}"));
-	assert.equal(Mark.stringify(output), '["10"]', 'Test let statement');
+	assert.equal(Mark.stringify(output), '"10"', 'Test let statement');
 	assert.end();
 });
