@@ -23,7 +23,14 @@ function matchTemplate(tmpl, comp_name, comp) {
 
 // compile Mark template into a rendering function
 function compile(tmpl, classes, adaptor) {
-	if (typeof tmpl === 'string') { tmpl = MarkAdaptor.parse(tmpl); }
+	adaptor = adaptor || MarkAdaptor;
+	if (typeof tmpl === 'string') {		
+		var url = new RegExp(/^([-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b)?\/?[-a-zA-Z0-9@:%_\+.~#?&//=]+$/gi);
+		if (tmpl.match(url)) { // load the template from the URL
+			tmpl = adaptor.load(tmpl);
+		}
+		tmpl = adaptor.parse(tmpl);
+	}
 	// console.log('compiling ...', tmpl);
 	let compiled = [];  let hasOthers = false;
 	for (let comp of tmpl) {
@@ -411,7 +418,7 @@ function transform(tmpl, model, context, options) {
 				return null;
 			}
 			else { // nested component or html element	
-				let cm = matchTemplate(tmpl, name, node);
+				let cm = matchTemplate(template, name, node);
 				if (cm) { // apply the template
 					let c = newComp(comp, cm);
 					// apply properties
@@ -440,12 +447,19 @@ function transform(tmpl, model, context, options) {
 		return null;
 	}
 
+	// prepare the template
+	if (!tmpl) { console.error('Missing template');  return null; } // missing template
+	if (typeof tmpl === 'string') {
+		template = compile(tmpl, options && options.classes, options && options.adaptor);
+	} else {
+		template = tmpl;
+	}
 	let rootName = model.constructor.name;   // console.log('apply tmpl', tmpl);
-	let comp = matchTemplate(tmpl, rootName, model);
+	let comp = matchTemplate(template, rootName, model);
 	if (comp) {
-		output = [];  template = tmpl;
+		output = [];  
 		let c = newComp({model:model, context:context || {}}, comp);
-		creator = options && options.creator || MarkAdaptor;
+		creator = options && options.adaptor || MarkAdaptor;
 		applyComp(comp, c, null);
 		if (!output.length) { return null; }
 		if (output.length === 1) { return output[0]; }
@@ -462,8 +476,8 @@ function transform(tmpl, model, context, options) {
 let Template = {compile, apply:transform};
 module.exports = Template;
 if (typeof window !== 'undefined') { window.MarkTemplate = Template; }
+
 /*
 todo: 
 1. matchTemplate can be made more efficient;
-2. tmpl, output, creator can be made closure variable to avoid passing around;
 */

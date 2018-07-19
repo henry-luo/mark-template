@@ -4,11 +4,12 @@
   "description": "JS template engine inspired by JSX and XSLT",
   "main": "mark-template.js",
   "scripts": {
-    "build": "browserify mark-template.js | uglifyjs > dist/mark-template.js",
+    "build": "browserify -x htmlparser2 mark-template.js | uglifyjs > dist/mark-template.js",
     "test": "clear && tape test/*.js | tap-spec",
     "karma-test": "karma run",
     "karma-start": "browserify test/basic.node.js > run/basic.js & karma start",
-    "karma-stop": "karma stop"
+    "karma-stop": "karma stop",
+    "list": "browserify -x htmlparser2 --full-paths mark-template.js | discify --open"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "cp-cli": "^1.1.2",
+    "disc": "^1.3.3",
     "fs-force": "^3.1.0",
     "mkdirp": "^0.5.1",
     "npm-run-all": "^4.1.3",

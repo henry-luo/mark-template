@@ -87,7 +87,7 @@ class Component {
 			// console.log('got res', content);
 			return content;
 		} else {
-			console.log('failed to load res');
+			console.log('failed to load res: '+url);
 			return null;
 		}
 	}
@@ -98,16 +98,16 @@ class Component {
 	}
 	
 	static render(model, tmplSrc, classes, domTarget, context) {
-		var tmpl = template.compile(tmplSrc, classes, Component.loadTemplate);
+		var tmpl = template.compile(tmplSrc, classes, Component);
 		context = context || {};
 		context[$vdom] = {template:tmpl, model:model, state:{}};
 		console.log('model', model);
-		var vhtml = template.apply(tmpl, model, context, Component);   console.log('vnodes', vhtml);
+		var vhtml = template.apply(tmpl, model, context, {adaptor:Component});   console.log('vnodes', vhtml);
 		if (vhtml.length > 1) {
 			throw "Template should output only 1 root element";
 		} 
 		else if (vhtml.length) {
-			var html = createElement(vhtml[0]);  console.log('DOM', html);
+			var html = createElement(vhtml[0]);  // console.log('DOM', html);
 			context.$vtree = vhtml[0];  context.$domNode = html;
 			domTarget.appendChild(html);
 		}
