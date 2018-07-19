@@ -29,7 +29,7 @@ function compile(tmpl, classes, adaptor) {
 		if (tmpl.match(url)) { // load the template from the URL
 			tmpl = adaptor.load(tmpl);
 		}
-		tmpl = adaptor.parse(tmpl);
+		tmpl = MarkAdaptor.parse(tmpl);
 	}
 	// console.log('compiling ...', tmpl);
 	let compiled = [];  let hasOthers = false;
@@ -42,7 +42,7 @@ function compile(tmpl, classes, adaptor) {
 		// todo: ensure import are before other elem
 		if (comp.constructor.name === 'import') {
 			if (hasOthers) { throw "import element should be before other elements"; }
-			let imp = adaptor.parse(adaptor.load(comp.at));
+			let imp = MarkAdaptor.parse(adaptor.load(comp.at));
 			Array.prototype.push.apply(compiled, compile(imp, classes, adaptor));
 		} 
 		else { // component, function

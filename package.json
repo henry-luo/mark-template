@@ -5,6 +5,7 @@
   "main": "mark-template.js",
   "scripts": {
     "build": "browserify -x htmlparser2 mark-template.js | uglifyjs > dist/mark-template.js",
+    "build-vdom": "browserify -x htmlparser2 adaptor/vdom-adaptor.js | uglifyjs > dist/component.js",
     "test": "clear && tape test/*.js | tap-spec",
     "karma-test": "karma run",
     "karma-start": "browserify test/basic.node.js > run/basic.js & karma start",
@@ -25,7 +26,7 @@
   "author": "Henry Luo",
   "license": "MIT",
   "dependencies": {
-    "mark-js": "^0.6.2"
+    "mark-js": "^0.6.3"
   },
   "devDependencies": {
     "cp-cli": "^1.1.2",

@@ -5,7 +5,7 @@ const createElement = require('virtual-dom/create-element');
 const diff = require('virtual-dom/diff');
 const patch = require('virtual-dom/patch');
 // Mark template
-const template = require('./template.js');
+const template = require('../mark-template.js');
 
 const $vdom = Symbol('Acro.ui.vdom');
 const $state = Symbol('Acro.ui.state');
@@ -106,9 +106,9 @@ class Component {
 		if (vhtml.length > 1) {
 			throw "Template should output only 1 root element";
 		} 
-		else if (vhtml.length) {
-			var html = createElement(vhtml[0]);  // console.log('DOM', html);
-			context.$vtree = vhtml[0];  context.$domNode = html;
+		else {
+			var html = createElement(vhtml);  console.log('DOM', html);
+			context.$vtree = vhtml;  context.$domNode = html;
 			domTarget.appendChild(html);
 		}
 	}
@@ -148,4 +148,4 @@ class Component {
 }
 
 module.exports = Component;
-// if (typeof window !== 'undefined') { window.Component = Component; }
+if (typeof window !== 'undefined') { window.Component = Component; }
