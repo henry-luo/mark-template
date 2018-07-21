@@ -52,6 +52,7 @@ test('Apply index and length', function(assert) {
 		`{template
 			{main
 				{div {apply}}
+				{div {apply to:\`this.model.contents()\`}}
 				{div {apply to:\`this.model.contents()[2]\`}}
 			}
 			{item
@@ -60,6 +61,6 @@ test('Apply index and length', function(assert) {
 		}`);
 	var model = Mark("{main {item} {item} {item}}");
 	var output = Template.apply(tmpl, model, null, {a:1, b:2});
-	assert.equal(Mark.stringify(output), '[{div "1 of 3; 2 of 3; 3 of 3; "},{div "1 of 1; "}]', 'Apply index and length');
+	assert.equal(Mark.stringify(output), '[{div "1 of 3; 2 of 3; 3 of 3; "},{div "1 of 3; 2 of 3; 3 of 3; "},{div "1 of 1; "}]', 'Apply index and length');
 	assert.end();
 });

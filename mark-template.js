@@ -313,7 +313,7 @@ function transform(tmpl, model, context, options) {
 			}
 		} 
 		// apply to model content
-		let newComp = Object.create(comp);  newComp.apply = {index:0, length:model.length()};
+		let newComp = Object.create(comp);  newComp.apply = {index:0, length:typeof model.length === 'function' ? model.length():model.length};
 		for (let m of model) {
 			applyToModel(m, params, newComp);
 			newComp.apply.index++;
