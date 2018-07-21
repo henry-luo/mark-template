@@ -18,8 +18,8 @@ class StringAdaptor {
 test('Simple string output', function(assert) {
 	var tmpl = Template.compile(
 		`{template 
-			{msg '<msg ' 'user=' {this.model.user} '>' {this.model.contents()} '</msg>'} 
-			{dialog {div {for each:'m', of:{this.model.contents()} {apply to:{m}}} } }
+			{msg '<msg ' 'user=' {this.model.user} '>' \`this.model.contents()\` '</msg>'} 
+			{dialog {div {for each:'m', of:\`this.model.contents()\` {apply to:{m}}} } }
 		}`);
 	var model = Mark.parse(`{dialog {msg user:'henry' 'hello'} {msg user:'peter' 'how are you?'} {msg user:'henry' 'I am fine'}}`);
 	var output = Template.apply(tmpl, model); 

@@ -28,7 +28,7 @@ test('Special cases', function(assert) {
 					{apply to:true} ' '
 					{apply to:false}
 					{log msg:'console message'}
-					{log msg:{1+'2'}}
+					{log msg:\`1+'2'\`}
 				}
 			}
 		}`);

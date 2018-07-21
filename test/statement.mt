@@ -2,7 +2,7 @@
 	{dialog extend:'Dialog'
 		{div 
 			{h1 {this.header}}
-			{for each:'m', of:{this.model.contents()}
+			{for each:'m', of:`this.model.contents()`
 				{apply to:{m}}
 			}
 			{footer
@@ -12,7 +12,7 @@
 	} 
 	{msg extend:'Message'
 		{p 
-			{if is:{this.model.user == this.model.parent().user}
+			{if is:`this.model.user == this.model.parent().user`
 				{span style:{float:'right'} {this.model.user}}			
 			}
 			{else
@@ -27,6 +27,6 @@
 		}
 	}
 	{copyright
-		{'Copyright © 2015-' + (new Date().getFullYear() >= 2017 ? 2017\:2016)}
+		`'Copyright © 2015-' + (new Date().getFullYear() >= 2017 ? 2017:2016)`
 	}
 }

@@ -4,6 +4,8 @@ const Vnode = require('virtual-dom/vnode/vnode');
 const createElement = require('virtual-dom/create-element');
 const diff = require('virtual-dom/diff');
 const patch = require('virtual-dom/patch');
+// Mark
+const Mark = require('mark-js');
 // Mark template
 const template = require('../mark-template.js');
 
@@ -93,8 +95,14 @@ class Component {
 	}
 	
 	static loadTemplate(url) {
-		let Mark = (typeof window !== 'undefined') ? window.Mark : require('mark-js');
-		return Mark.parse(Component.load(url));
+		try {
+			return Mark.parse(Component.load(url));
+		}
+		catch (e) {
+			e.fileName = url;
+			e.message += ' in file "' + url + '"';
+			throw e;  // rethrow the error
+		}
 	}
 	
 	static render(model, tmplSrc, classes, domTarget, context) {

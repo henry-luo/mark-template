@@ -27,7 +27,7 @@ test('Template statement support', function(assert) {
 });
 
 test('Test for loop', function(assert) {
-	var tmpl = Template.compile("{template {test {for each:'i', of:[1, 2, 'string'] {i}} }}");
+	var tmpl = Template.compile("{template {test {for each:'i' of:[1, 2, 'string'] {i}} }}");
 	var output = Template.apply(tmpl, Mark.parse("{test}"));
 	assert.deepEqual(output, '12string', 'Template for loop support ');
 	assert.end();
@@ -37,9 +37,9 @@ test('Test if else statement', function(assert) {
 	var tmpl = Template.compile(`
 		{template 
 			{test 
-				{for each:'val', of:[11, 5.3, '3']
-					{if is:{val>10} {span {val} '>10'}}
-					{else if:{val>5} {span {val} '>5'}}
+				{for each:'val' of:[11, 5.3, '3']
+					{if is:\`val>10\` {span {val} '>10'}}
+					{else if:\`val>5\` {span {val} '>5'}}
 					{else {span {val} '<=5'}}
 				}
 			} 
@@ -54,8 +54,8 @@ test('Test let statement', function(assert) {
 	var tmpl = Template.compile(`
 		{template 
 			{test 
-				{let a:5, b:{8/4}
-					{a * b}
+				{let a:5, b:\`8/4\`
+					\`a * b\`
 				}
 			} 
 		}`

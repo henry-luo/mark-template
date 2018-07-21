@@ -24,16 +24,26 @@ function matchTemplate(tmpl, comp_name, comp) {
 // compile Mark template into a rendering function
 function compile(tmpl, classes, adaptor) {
 	adaptor = adaptor || MarkAdaptor;
-	if (typeof tmpl === 'string') {		
+	let template = tmpl, isUrl = false;
+	if (typeof template === 'string') {		
 		var url = new RegExp(/^([-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b)?\/?[-a-zA-Z0-9@:%_\+.~#?&//=]+$/gi);
-		if (tmpl.match(url)) { // load the template from the URL
-			tmpl = adaptor.load(tmpl);
+		if (template.match(url)) { // load the template from the URL
+			template = adaptor.load(template);  isUrl = true;
 		}
-		tmpl = MarkAdaptor.parse(tmpl);
+		try {
+			template = MarkAdaptor.parse(template);
+		}
+		catch (e) {
+			if (isUrl) {
+				e.fileName = tmpl;
+				e.message += ' in file "' + url + '"';
+			}
+			throw e;  // rethrow the error
+		}
 	}
 	// console.log('compiling ...', tmpl);
 	let compiled = [];  let hasOthers = false;
-	for (let comp of tmpl) {
+	for (let comp of template) {
 		// console.log('compiling comp', comp, typeof comp);
 		if (typeof comp !== 'object') {
 			console.error("Component is not an object: ", comp);  
