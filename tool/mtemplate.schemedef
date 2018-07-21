@@ -4,7 +4,7 @@
  <keyword-classes>
  	<keyword-classes>
 		<keyword-class name="mt_keywords">
-			template import extend if else is for each of let apply to compose this true false null NaN Infinity
+			template import extend match if else is not for each of let apply to compose this true false null NaN Infinity
 		</keyword-class>
 	</keyword-classes>
  </keyword-classes>
@@ -18,7 +18,8 @@
 	 <stringtype id="1" start="'" end="'" multiline="true" escape="\" />
    </strings>
 
-   <identifiers start="[\_a-zA-Z\$]" content="[\_a-zA-Z\$-]"/>
+   <identifiers start="[\_a-zA-Z\$]" content="[\_a-zA-Z\$-\.]"/>
+   <!--preprocessor start="`" end="`"/--> 
 
    <comments>
      <line start="//" />    
@@ -37,7 +38,8 @@
      <style name="Number" key="4" class="number" />
      <style name="Keywords" key="5" class="keyword" />
      <style name="String" key="10" class="string" />
-	 <style name="String 2" key="11" class="string" />
+	 <style name="String 1" key="11" class="string" />
+	 <style name="Pre-Processor" key="12" class="preprocessor" />
    </use-styles>
 
    <use-keywords>
