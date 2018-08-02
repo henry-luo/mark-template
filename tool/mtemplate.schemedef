@@ -14,9 +14,8 @@
            
    <strings>
      <!-- Double quoted string with \ as an escape character -->
-     <!--stringtype id="0" start="&quot;" end="&quot;" multiline="true" escape="\" /-->
-	 <stringtype id="0" start="'" end="'" multiline="true" escape="\" />
-	 <stringtype id="1" start="`" end="`" multiline="true" />
+     <stringtype id="0" start="&quot;" end="&quot;" multiline="true" escape="\" />
+	 <stringtype id="1" start="'" end="'" multiline="true" escape="\" />
    </strings>
 
    <identifiers start="[\_a-zA-Z\$]" content="[\_a-zA-Z\$-\.]"/>
@@ -38,8 +37,8 @@
 	 <style name="Identifier" key="3" class="identifier"/>
      <style name="Number" key="4" class="number" />
      <style name="Keywords" key="5" class="keyword" />
-     <style name="String" key="10" class="string" fore="333399"/>
-	 <style name="String 1" key="11" class="string" />  <!--f80000-->
+     <style name="String" key="10" class="string"/> <!-- 333399 -->
+	 <style name="String 1" key="11" class="string"/>  <!--f80000-->
 	 <style name="Pre-Processor" key="12" class="preprocessor" />
    </use-styles>
 

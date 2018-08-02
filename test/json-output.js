@@ -18,7 +18,7 @@ test('Simple JSON output', function(assert) {
 	var tmpl = Template.compile(
 		`{template 
 			{msg {style:{float:'left'}, user:{this.model.user}} } 
-			{dialog {for each:'m' of:\`this.model.contents()\` {apply to:{m}}}}
+			{dialog {for each:'m' of:(this.model.contents()) {apply to:{m}}}}
 		}`);
 	var model = Mark.parse("{dialog {msg user:'henry' 'hello'} {msg user:'peter' 'how are you?'} {msg user:'henry' 'I am fine'}}");
 	var output = Template.apply(tmpl, model, JsonAdaptor); 

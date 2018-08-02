@@ -38,8 +38,8 @@ test('Test if else statement', function(assert) {
 		{template 
 			{test 
 				{for each:'val' of:[11, 5.3, '3']
-					{if is:\`val>10\` {span {val} '>10'}}
-					{else if:\`val>5\` {span {val} '>5'}}
+					{if is:(val>10) {span {val} '>10'}}
+					{else if:(val>5) {span {val} '>5'}}
 					{else {span {val} '<=5'}}
 				}
 			} 
@@ -54,8 +54,8 @@ test('Test let statement', function(assert) {
 	var tmpl = Template.compile(`
 		{template 
 			{test 
-				{let a:5, b:\`8/4\`
-					\`a * b\`
+				{let a:5, b:(8/4)
+					(a * b)
 				}
 			} 
 		}`

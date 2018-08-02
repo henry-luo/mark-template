@@ -38,7 +38,7 @@ test('Context shadowing', function(assert) {
 				}
 			}
 			{item
-				\`this.context.a + this.context.b\`
+				(this.context.a + this.context.b)
 			}
 		}`);
 	var model = Mark("{main {item}}");
@@ -52,11 +52,11 @@ test('Apply index and length', function(assert) {
 		`{template
 			{main
 				{div {apply}}
-				{div {apply to:\`this.model.contents()\`}}
-				{div {apply to:\`this.model.contents()[2]\`}}
+				{div {apply to:(this.model.contents())}}
+				{div {apply to:(this.model.contents()[2])}}
 			}
 			{item
-				\`this.apply.index + 1\` ' of ' {this.apply.length} '; '
+				(this.apply.index + 1) ' of ' {this.apply.length} '; '
 			}
 		}`);
 	var model = Mark("{main {item} {item} {item}}");
