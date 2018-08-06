@@ -147,10 +147,12 @@ class Component {
 		while (elmt) {
 			if (elmt[handler]) {
 				console.log('got handler ' + handler, elmt[handler]);
+				// handler is already bound to the component, so no need to bind 'this' here
 				return elmt[handler](options);
 			}
 			elmt = elmt.parentNode;
 		}
+		console.log("handler '" + handler + "' not defined onthe element");
 		return undefined;
 	}
 }
