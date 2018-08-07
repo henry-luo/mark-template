@@ -18,7 +18,7 @@ Features of Mark Template:
 
 ### 2. Top-level elements
 
-Like React JSX and XSLT, each Mark template is actually a collection of transformation functions. The top-level elements that can directly appear under the `{template}` root are:
+Like React JSX and XSLT, each Mark Template script is actually a collection of transformation templates and functions. The top-level elements that can directly appear under the `{template}` root are:
 
 - `{import at:'url'}`
   - Import functions from template at the specified URL.
@@ -50,9 +50,11 @@ Like React JSX and XSLT, each Mark template is actually a collection of transfor
 
 ### 3. Component Transformation
 
-The following section describes about the element that can be nested inside the component/function body. There are pre-defined elements that carry out specific transformation logic. Elements other than these pre-defined ones are treated as literal elements. Transformation elements and literal elements can nest within each other.
+The following section describes the element that can nest inside the component/function body, including pre-defined elements that carry out specific transformation logic, and literal elements. Elements other than these pre-defined ones are treated as literal elements. Transformation elements and literal elements can nest within each other.
 
-The contents inside component/function body are processed in the following prioritized way:
+#### 3.1 Processing of element content
+
+The contents a template element are processed in the following prioritized way:
 
 - if it is an element, then
   - if it is one of the pre-defined transform elements, including `{if}`, `{else}`, `{for}`, `{let}`, `{apply}`, `{compose}`, process it accordingly;
@@ -63,7 +65,7 @@ The contents inside component/function body are processed in the following prior
 - else if it is a Mark pragma, then it is processed as an inline JS expression;
 - else any text nodes are copied literally;
 
-#### 3.1 Pre-defined transformation elements
+#### 3.2 Pre-defined transformation elements
 
 - `{if is:expr ...}` or `{if not:expr ...}`
   - When the condition expression is evaluated to `true`, then the template body is executed, otherwise the body of the following `{else}` branch is executed, if there's any.
@@ -79,29 +81,33 @@ The contents inside component/function body are processed in the following prior
 - `{apply}` or `{apply to:expr}`
   - Apply template transformation a list of model objects. If optional to:expr is specified, it is applied to the objects returned from evaluating the `expr`, otherwise it is applied to the 
 - `{compose}`
-  - Execute the body of the current component.
+  - Compose the body of the current high-order component, by applying transformation to the child elements of the component.
 
-#### 3.2 Component and function invocation
+#### 3.3 Component and function invocation
 
 - `{comp prop1:value prop2:expr ...}`
   - Invokes a component template, through a template matching process, like XSLT.
 - `{func prop1:value prop2:expr ...}`
-  - Invokes a function. The differences are:
-    - when a component is invoked, it changes the *current component* in the context; when a function is invoked, it does not change the *current model object* or the *current component*.
-    - component invocation goes through a template matching process like XSLT, which is more powerful and flexible (but also slower in performance), whereas function is a straight invocation.
+  - Invokes a function. 
 
-#### 3.3 Inline expressions
+  The differences are:
+
+  - when a component is invoked, it changes the *current component* in the context; when a function is invoked, it does not change the *current model object* or the *current component*.
+  - component invocation goes through a template matching process like XSLT, which is more powerful and flexible (but also slower in performance), whereas function is a straight invocation without template matching.
+
+#### 3.4 Inline expressions
 
 Elements whose name start with `this` and Mark pragmas are treated as inline JS expressions.
 
 - `{this.*}`
 - `(expr as Mark pragma)`
 
-The result of evaluating the expression is passed to the template engine output adaptor. It may be casted into a string or preserved as a value, depending on the output adaptor.
+The result of evaluating the expression is passed to the template engine output adaptor. It may be casted into string or preserved as value, depending on the output adaptor.
 
-#### 3.4 Literal elements
+#### 3.5 Literal elements
 
-- `{literalElement ...}`
+- `{elmt prop1:value prop2:expr ...}`
+  - Constructs an output element of same name. Properties are evaluated as defined in 3.4, and contents processed as defined in 3.1.
 
 ### 4. Output Adaptors
 

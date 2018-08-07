@@ -427,7 +427,7 @@ function transform(tmpl, model, context, options) {
 				if (val) output.push(creator.createText(val));
 				return null;
 			}
-			else { // nested component or html element	
+			else { // nested component or literal element	
 				let cm = matchTemplate(template, name, node);
 				if (cm) { // apply the template
 					let c = newComp(comp, cm);
@@ -438,7 +438,7 @@ function transform(tmpl, model, context, options) {
 						// children needs to be constructed, instead of directly passing down
 					}
 					applyComp(cm, c, comp);
-				} else { // apply as html element
+				} else { // apply as literal element
 					let props = {}, _output = output;
 					output = null;
 					// construct properties
