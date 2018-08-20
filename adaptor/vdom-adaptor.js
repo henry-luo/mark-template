@@ -123,21 +123,21 @@ class Component {
 	update() {
 		let context = this.context;
 		console.log('template update');
-		if (!context || context[$needUpdate]) { return; }
+		if (!context || context[$needUpdate]) { console.log('got update flag already');  return; } // return if already $needUpdate
 		context[$needUpdate] = true;
 		
 		function domUpdate() {
+			context[$needUpdate] = false;
 			let vdom = context[$vdom];
-			var vhtml = template.apply(vdom.template, vdom.model, context, Component);
+			var vhtml = template.apply(vdom.template, vdom.model, context, {adaptor:Component});
 			if (vhtml.length > 1) {
 				throw "Template should output only 1 root element";
 			}
-			else if (vhtml.length) {
-				var patches = diff(context.$vtree, vhtml[0]);  console.log('template diff', patches);
+			else if (vhtml) {
+				var patches = diff(context.$vtree, vhtml);  console.log('template diff', patches);
 				context.$domNode = patch(context.$domNode, patches);  console.log('patched', context.$domNode);
-				context.$vtree = vhtml[0];
+				context.$vtree = vhtml;
 			}
-			context[$needUpdate] = false;
 		}
 		setTimeout(domUpdate, 0); // setTimeout to batch the dom update
 	}
