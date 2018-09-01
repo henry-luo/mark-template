@@ -11,6 +11,7 @@ const template = require('../mark-template.js');
 
 const $vdom = Symbol('Acro.ui.vdom');
 const $state = Symbol('Acro.ui.state');
+const $context = Symbol('Acro.ui.context');
 const $needUpdate = Symbol('Acro.ui.needUpdate');
 const $hook = Symbol('Acro.ui.hook');
 
@@ -109,6 +110,7 @@ class Component {
 		var tmpl = template.compile(tmplSrc, classes, Component);
 		context = context || {};
 		context[$vdom] = {template:tmpl, model:model, state:{}};
+		context[$context] = context;
 		console.log('model', model);
 		var vhtml = template.apply(tmpl, model, context, {adaptor:Component});   console.log('vnodes', vhtml);
 		if (vhtml.length > 1) {
@@ -121,9 +123,10 @@ class Component {
 		}
 	}
 	update() {
-		let context = this.context;
 		console.log('template update');
-		if (!context || context[$needUpdate]) { console.log('got update flag already');  return; } // return if already $needUpdate
+		if (!this.context || !this.context[$context]) { console.log('null context');  return; }
+		let context = this.context[$context]; // points to the root context
+		if (context[$needUpdate]) { console.log('got update flag already');  return; } // return if already $needUpdate
 		context[$needUpdate] = true;
 		
 		function domUpdate() {
