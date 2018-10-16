@@ -15,25 +15,31 @@ test('Basic template transform', function(assert) {
 	assert.end();
 });
 
-test('Special cases', function(assert) {
+test('Special values', function(assert) {
 	var tmpl = Template.compile(
 		`{template
 			{item
 				{div
 					"content "
+					{apply to:(undefined)}
 					{apply to:null}
 					{apply to:{null}}
 					{apply to:{this.context.pragma}}
+					{apply to:0} ' '
 					{apply to:123} ' '
 					{apply to:true} ' '
 					{apply to:false}
 					{log msg:'console message'}
 					{log msg:(1+'2')}
 				}
+				{div 
+					"output "
+					(undefined) (null) (true) ',' (false) ',' (0)
+				}
 			}
 		}`);
 	var model = Mark("{item}");
 	var output = Template.apply(tmpl, model, null, {pragma:Mark.pragma("{a b c}")});
-	assert.equal(Mark.stringify(output), '{div "content 123 true false"}', 'Special matching');
+	assert.equal(Mark.stringify(output), '[{div "content 0 123 true false"},{div "output true,false,0"}]', 'Special values handling');
 	assert.end();
 });

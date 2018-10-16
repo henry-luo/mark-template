@@ -267,7 +267,6 @@ function transform(tmpl, model, context, options) {
 	}
 
 	function applyToModel(m, params, comp) {
-		if (m == null) { return; } // null, undefined
 		if (typeof m === 'object') { // object
 			if (!m.constructor) { return; } // skip pragma
 			let cm = matchTemplate(template, m.constructor.name, m);
@@ -290,8 +289,8 @@ function transform(tmpl, model, context, options) {
 				output = _output;
 			}
 		}
-		else { // string, number
-			output.push(creator.createText(m));  // output text node
+		else {
+			if (m != null) output.push(creator.createText(m));  // output text node
 		}
 	}
 
@@ -332,7 +331,7 @@ function transform(tmpl, model, context, options) {
 		}
 		else if (!node.constructor) { // Mark pragma
 			let val = evalExpr(node.pragma(), comp);  // console.log("got pragma", node.pragma());	
-			if (val) output.push(creator.createText(val));
+			if (val != null) output.push(creator.createText(val));
 		}
 		else {
 			let name = node.constructor.name;
@@ -419,12 +418,12 @@ function transform(tmpl, model, context, options) {
 			else if (name.includes('.')) {
 				// template value binding
 				let val = evalProp(node, comp);  // console.log("got var binding", name, txt, comp);	
-				if (val) output.push(creator.createText(val));
+				if (val != null) output.push(creator.createText(val));
 			}
 			else if (name in comp[$stack]) { // variable
 				// console.log('got stack item', comp[$stack], name);
 				let val = comp[$stack][name];
-				if (val) output.push(creator.createText(val));
+				if (val != null) output.push(creator.createText(val));
 				return null;
 			}
 			else { // nested component or literal element	

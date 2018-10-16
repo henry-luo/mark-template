@@ -6,8 +6,9 @@ class Component {
 	static createElement(type, properties, children) {
 		return Mark(type, properties, children);
 	}
-	static createText(item) { 
+	static createText(item) {
 		return item.toString();
+		// return item != null ? item.toString():'';
 	}
 	
 	// template processing
