@@ -42,7 +42,7 @@ class Component {
 				}
 				props.onmount = val[$hook];
 			}
-			else if (p === 'id' || p === 'style' || p === 'value' || p === 'checked' || (typeof val === 'function')) {
+			else if (p === 'id' || p === 'style' || p === 'value' || p === 'checked' || p === 'selected' || (typeof val === 'function')) {
 				props[p] = val;  // properties
 			}
 			else { // html attributes
