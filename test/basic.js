@@ -34,12 +34,12 @@ test('Special values', function(assert) {
 				}
 				{div 
 					"output "
-					(undefined) (null) (true) ',' (false) ',' (0)
+					(undefined) (null) (this.context.pragma.pragma()) ',' (true) ',' (false) ',' (0)
 				}
 			}
 		}`);
 	var model = Mark("{item}");
-	var output = Template.apply(tmpl, model, null, {pragma:Mark.pragma("{a b c}")});
-	assert.equal(Mark.stringify(output), '[{div "content 0 123 true false"},{div "output true,false,0"}]', 'Special values handling');
+	var output = Template.apply(tmpl, model, {pragma:Mark.pragma("!comment")});
+	assert.equal(Mark.stringify(output), '[{div "content 0 123 true false"},{div "output !comment,true,false,0"}]', 'Special values handling');
 	assert.end();
 });
